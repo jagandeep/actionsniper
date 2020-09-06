@@ -23,10 +23,9 @@ public class Main implements SniperListener {
     public static final String AUCTION_ID_FORMAT =
             ITEM_ID_AS_LOGIN + "@%s/" + AUCTION_RESOURCE;
     public static final String MAIN_WINDOW_NAME = "Auction Sniper Main";
-    public static String SNIPER_STATUS_NAME = "sniper status";
+    public static final String SNIPER_STATUS_NAME = "sniper status";
     private MainWindow ui;
 
-    @SuppressWarnings("unused")
     private Chat notToBeGCd;
 
     public Main() throws Exception {
@@ -42,10 +41,11 @@ public class Main implements SniperListener {
 
     private void joinAuction(XMPPConnection connection, String itemId)
             throws XMPPException {
+        Auction nullAuction = amount -> { };
         disconnectWhenUICloses(connection);
         final Chat chat = connection.getChatManager().createChat( // create a chat object to connect to first argument ( item-auction)
                 auctionId(itemId, connection),
-               new AuctionMessageTranslator(new AuctionSniper(this))); // a listener to a message from item-auction
+               new AuctionMessageTranslator(new AuctionSniper(nullAuction,this))); // a listener to a message from item-auction
                                                                                                     //and only message show the lost status in ui
         this.notToBeGCd = chat;
         chat.sendMessage(JOIN_COMMAND_FORMAT);
@@ -87,5 +87,10 @@ public class Main implements SniperListener {
                 ui.showStatus(MainWindow.STATUS_LOST);
             }
         });
+    }
+
+    @Override
+    public void sniperBidding() {
+
     }
 }
