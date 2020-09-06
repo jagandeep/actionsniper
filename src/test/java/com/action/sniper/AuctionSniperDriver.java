@@ -14,7 +14,7 @@ public class AuctionSniperDriver  extends JFrameDriver {
                 JFrameDriver.topLevelFrame(
                         named(Main.MAIN_WINDOW_NAME),
                         showingOnScreen()),
-                new AWTEventQueueProber(timeoutMillis, 100));
+                new AWTEventQueueProber(timeoutMillis, 1000));
     }
     public void showsSniperStatus(String statusText) {
         new JLabelDriver(
